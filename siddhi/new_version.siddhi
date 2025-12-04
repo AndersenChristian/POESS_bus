@@ -1,0 +1,252 @@
+@App:name("BusStopApp")
+
+
+-- Input streams
+
+-- DriverEvents: possible actions
+--   - ApproachStop
+--   - PassStop
+--   - ArriveAtStop
+--   - DepartFromStop
+--   - OpenDoors
+--   - CloseDoors
+--   - CheckCrowding
+--   - LowerEntrance
+--   - RaiseEntrance
+define stream DriverEvents(driverId string, busId string, action string);
+
+-- PassengerEvents: possible actions
+--   - Board
+--   - Exit
+--   - WaitingAtStop
+--   - StopButtonPressed
+--   - SpecialNeedsButtonPressed
+define stream PassengerEvents(passengerId string, busId string, action string);
+
+-- Bus state table
+define table BusState(
+    busId string,
+    approachingStop bool,
+    stopRequired bool,
+    waitingAtStop bool,
+    stopWithSpecialNeeds bool,
+    atStop bool,
+    doorsOpen bool,
+    entranceLowered bool,
+    crowded bool
+);
+
+-- Each row = one passenger currently on a bus
+define table BusPassengerRelation(
+    busId string,
+    passengerId string
+);
+
+
+
+
+-- Output streams
+
+-- Driver
+@sink(
+    type='http',
+    publisher.url="http://localhost:5001/driver/{{driverId}}",
+    method='POST',
+    @map(type='json')
+)
+define stream DriverResponseStream(
+    driverId string,
+    payloadType string,
+    payload object
+);
+
+-- Passenger
+@sink(
+    type='http',
+    publisher.url="http://localhost:5001/passenger/{{passengerId}}",
+    method='POST',
+    @map(type='json')
+)
+define stream PassengerResponseStream(
+    passengerId string,
+    payloadType string,
+    payload object
+);
+
+@sink(
+    type='http',
+    publisher.url="http://localhost:5001/passenger/{{busId}}",
+    method='POST',
+    @map(type='json')
+)
+define stream PassengerNotificationStream(
+    busId string,
+    payloadType string,
+    payload object
+);
+
+-- Output streams passengers
+
+---------------------------------------------------
+-- DRIVER ACTIONS UPDATE BUS STATE
+---------------------------------------------------
+
+-- Update BusState
+from DriverEvents[action == "ApproachStop"] as d
+join BusState as b
+on b.busId == d.busId
+select d.busId,
+       true as approachingStop,
+       b.stopRequired,
+       b.stopWithSpecialNeeds,
+       b.atStop,
+       b.doorsOpen,
+       b.entranceLowered,
+       b.crowded
+update BusState
+on BusState.busId == busId;
+
+-- Notify passengers
+from DriverEvents[action == "ApproachStop"]
+select busId,
+       "ApproachStopNotice" as payloadType,
+       map:create("message","Bus approaching stop. You may press stop, special stop, or request boarding.") as payload
+insert into PassengerNotificationStream;
+
+
+-- Driver arrives at stop: decide whether to stop or continue
+from DriverEvents[action == "ArrivingAtStop"] as d
+join BusState as b
+on b.busId == d.busId
+select d.busId,
+       ifThenElse(b.stopRequired == true or b.stopWithSpecialNeeds == true,
+                  "Stop",
+                  "Continue") as command,
+       false as approachingStop,  -- always reset when arriving
+       b.stopRequired,
+       b.waitingAtStop,
+       b.stopWithSpecialNeeds,
+       ifThenElse(b.stopRequired == true or b.stopWithSpecialNeeds == true,
+                  true,
+                  false) as atStop,  -- only true if stopping
+       b.doorsOpen,
+       b.entranceLowered,
+       b.crowded
+insert into DriverResponseStream, BusState;
+
+from DriverEvents[action == "OpenDoors"] as d
+join BusState as b
+on b.busId == d.busId and b.atStop == true and b.doorsOpen == false
+select d.busId,
+       b.approachingStop,
+       b.stopRequired,
+       b.waitingAtStop,
+       b.stopWithSpecialNeeds,
+       b.atStop,
+       true as doorsOpen,
+       b.entranceLowered,
+       b.crowded
+update BusState
+on BusState.busId == busId;
+
+
+
+
+---------------------------------------------------
+-- PASSENGER ACTIONS DEPEND ON BUS STATE
+---------------------------------------------------
+
+-- Passenger presses stop or waits at stop
+from PassengerEvents[action == "waitingAtStop" or action == "StopButtonPressed"] as p
+join BusState as b
+on b.busId == "BUS_1"
+select b.busId,
+       b.approachingStop,
+       true as stopRequired,
+       true as waitingAtStop,
+       b.stopWithSpecialNeeds,
+       b.atStop,
+       b.doorsOpen,
+       b.entranceLowered,
+       b.crowded
+update BusState
+on BusState.busId == busId;
+
+-- Passenger presses special needs button
+from PassengerEvents[action == "SpecialNeedsButtonPressed"] as p
+join BusState as b
+on b.busId == "BUS_1"
+select b.busId,
+       b.approachingStop,
+       b.stopRequired,
+       true as stopWithSpecialNeeds,
+       b.atStop,
+       b.doorsOpen,
+       b.entranceLowered,
+       b.crowded
+update BusState
+on BusState.busId == busId;
+
+-- Passenger leaving
+
+
+-- Passenger boards successfully: update relation and notify
+from PassengerEvents[action == "BoardRequest"] as p
+join BusState as b
+on b.busId == p.busId and b.doorsOpen == true and b.crowded == false
+select p.busId,
+       p.passengerId,
+       "BoardingResult" as payloadType,
+       map:create("status","Boarded") as payload
+insert into BusPassengerRelation, PassengerResponseStream;
+
+
+-- Boarding denied
+from PassengerEvents[action == "BoardRequest"] as p
+join BusState as b
+on b.busId == "BUS_1" and b.doorsOpen == true and b.crowded == true
+select p.passengerId, p.busId,
+       "BoardingResult" as payloadType,
+       map:create("status","Denied","reason","Bus is full") as payload
+insert into PassengerResponseStream;
+
+
+
+-----------------
+-- Automatic
+-----------------
+
+-- lower bus
+from BusState[atStop == true and doorsOpen == true and stopWithSpecialNeeds == true]
+select busId,
+       approachingStop,
+       stopRequired,
+       waitingAtStop,
+       stopWithSpecialNeeds,
+       atStop,
+       doorsOpen,
+       true as entranceLowered,
+       crowded
+update BusState
+on BusState.busId == busId;
+
+-- Count passengers per bus and update crowded flag
+from BusPassengerRelation#window.length(0)
+select busId, count(passengerId) as passengerCount
+group by busId
+insert into BusLoadStream;
+
+-- Update BusState based on passenger count
+from BusLoadStream as l
+join BusState as b
+on b.busId == l.busId
+select l.busId,
+       b.approachingStop,
+       b.stopRequired,
+       b.stopWithSpecialNeeds,
+       b.atStop,
+       b.doorsOpen,
+       b.entranceLowered,
+       ifThenElse(l.passengerCount > 20, true, false) as crowded
+update BusState
+on BusState.busId == busId;
