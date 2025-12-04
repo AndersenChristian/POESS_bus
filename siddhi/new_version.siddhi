@@ -63,7 +63,7 @@ define stream DriverResponseStream(
 -- Passenger
 @sink(
     type='http',
-    publisher.url="http://localhost:5001/passenger/{{passengerId}}",
+    publisher.url="http://localhost:5001/passenger_id/{{passengerId}}",
     method='POST',
     @map(type='json')
 )
@@ -75,7 +75,7 @@ define stream PassengerResponseStream(
 
 @sink(
     type='http',
-    publisher.url="http://localhost:5001/passenger/{{busId}}",
+    publisher.url="http://localhost:5001/passenger_bus/{{busId}}",
     method='POST',
     @map(type='json')
 )
