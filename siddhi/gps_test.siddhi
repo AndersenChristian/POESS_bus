@@ -1,0 +1,16 @@
+@App:name("GPS_Test")
+
+
+@source(type='http', receiver.url="http://0.0.0.0:7071/gps",
+        @map(type='json'))
+define stream GPS_In_Stream(busId string, lat double, lon double);
+
+@sink(type='http', publisher.url="http://localhost:5001/siddhi/out",
+      method='POST',
+      @map(type='json'))
+define stream GPS_Out_Stream(busId string, lat double, lon double, processed string);
+
+-- Simple pass-through
+from GPS_In_Stream
+select busId, lat, lon, "ok" as processed
+insert into GPS_Out_Stream;

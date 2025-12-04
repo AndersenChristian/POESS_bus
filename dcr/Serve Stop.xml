@@ -1,0 +1,683 @@
+<dcrgraph title="Serve Stop" dataTypesStatus="hide" filterLevel="-1" insightFilter="false" zoomLevel="0" formGroupStyle="Normal" formLayoutStyle="Horizontal" formShowPendingCount="true" graphBG="#f1f6fe" graphType="0" exercise="false" version="1.1">
+    <meta>
+        <graph id="2005026" hash="48F9EB6E357E8FEDEC7F6B619B819CEA" guid="F9A383F3-03F9-4C00-B603-9A10B4DDC54C" OwnerName="Rói Dam Dalsgard" OwnerId="161605" categoryId="13695" categoryTitle="Default" Keywords=""/>
+        <revision id="5189168" type="minor" date="2025-12-02T15:34:38.660"/>
+        <organization id="18" name="DTU - Danish Technical University"/>
+        <environment environment="Test"/>
+    </meta>
+    <specification>
+        <resources>
+            <events>
+                <event id="A1">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="250" yLoc="70"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>1</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A5">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="700" yLoc="170"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>5</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A6">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="250" yLoc="320"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>6</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A7">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="850" yLoc="170"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>7</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A8">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1000" yLoc="170"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                            <role>Passengers</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>8</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A9">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1000" yLoc="20"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>9</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A11">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1350" yLoc="170"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>11</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A12">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1500" yLoc="170"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>12</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A13">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1000" yLoc="370"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>13</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A14">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1200" yLoc="370"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>14</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A15">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1200" yLoc="20"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>15</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+                <event id="A17" type="subprocess">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="450" yLoc="20"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role/>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>17</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                    <event id="A4">
+                        <precondition message=""/>
+                        <custom>
+                            <visualization>
+                                <location xLoc="480" yLoc="370"/>
+                                <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                            </visualization>
+                            <roles>
+                                <role>Driver</role>
+                            </roles>
+                            <readRoles>
+                                <readRole/>
+                            </readRoles>
+                            <groups>
+                                <group/>
+                            </groups>
+                            <phases>
+                                <phase/>
+                            </phases>
+                            <eventType/>
+                            <eventScope>private</eventScope>
+                            <eventTypeData/>
+                            <eventDescription/>
+                            <purpose/>
+                            <guide/>
+                            <insight use="false"/>
+                            <level>100</level>
+                            <sequence>4</sequence>
+                            <costs>0</costs>
+                            <eventData/>
+                            <interfaces/>
+                        </custom>
+                    </event>
+                    <event id="A3">
+                        <precondition message=""/>
+                        <custom>
+                            <visualization>
+                                <location xLoc="480" yLoc="220"/>
+                                <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                            </visualization>
+                            <roles>
+                                <role>Driver</role>
+                            </roles>
+                            <readRoles>
+                                <readRole/>
+                            </readRoles>
+                            <groups>
+                                <group/>
+                            </groups>
+                            <phases>
+                                <phase/>
+                            </phases>
+                            <eventType/>
+                            <eventScope>private</eventScope>
+                            <eventTypeData/>
+                            <eventDescription/>
+                            <purpose/>
+                            <guide/>
+                            <insight use="false"/>
+                            <level>100</level>
+                            <sequence>3</sequence>
+                            <costs>0</costs>
+                            <eventData/>
+                            <interfaces/>
+                        </custom>
+                    </event>
+                    <event id="A2">
+                        <precondition message=""/>
+                        <custom>
+                            <visualization>
+                                <location xLoc="480" yLoc="70"/>
+                                <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                            </visualization>
+                            <roles>
+                                <role>Driver</role>
+                            </roles>
+                            <readRoles>
+                                <readRole/>
+                            </readRoles>
+                            <groups>
+                                <group/>
+                            </groups>
+                            <phases>
+                                <phase/>
+                            </phases>
+                            <eventType/>
+                            <eventScope>private</eventScope>
+                            <eventTypeData/>
+                            <eventDescription/>
+                            <purpose/>
+                            <guide/>
+                            <insight use="false"/>
+                            <level>100</level>
+                            <sequence>2</sequence>
+                            <costs>0</costs>
+                            <eventData/>
+                            <interfaces/>
+                        </custom>
+                    </event>
+                </event>
+                <event id="A16">
+                    <precondition message=""/>
+                    <custom>
+                        <visualization>
+                            <location xLoc="1200" yLoc="170"/>
+                            <colors bg="#f9f7ed" textStroke="#000000" stroke="#cccccc"/>
+                        </visualization>
+                        <roles>
+                            <role>Driver</role>
+                            <role>Passengers</role>
+                        </roles>
+                        <readRoles>
+                            <readRole/>
+                        </readRoles>
+                        <groups>
+                            <group/>
+                        </groups>
+                        <phases>
+                            <phase/>
+                        </phases>
+                        <eventType/>
+                        <eventScope>private</eventScope>
+                        <eventTypeData/>
+                        <eventDescription/>
+                        <purpose/>
+                        <guide/>
+                        <insight use="false"/>
+                        <level>100</level>
+                        <sequence>18</sequence>
+                        <costs>0</costs>
+                        <eventData/>
+                        <interfaces/>
+                    </custom>
+                </event>
+            </events>
+            <subProcesses/>
+            <distribution/>
+            <labels>
+                <label id="Approach Stop"/>
+                <label id="Stop Button Pressed"/>
+                <label id="Outside Passengers Waiting"/>
+                <label id="Special Needs         Button Pressed"/>
+                <label id="Arrive at Stop"/>
+                <label id="Pass Stop"/>
+                <label id="Open Doors"/>
+                <label id="Passengers Exit"/>
+                <label id="Check if Bus is too   Crowded"/>
+                <label id="Close Doors"/>
+                <label id="Depart From Stop"/>
+                <label id="Lower Entrance"/>
+                <label id="Raise Entrance"/>
+                <label id="Deny Boarding"/>
+                <label id="Stop Request"/>
+                <label id="Passengers Enter"/>
+            </labels>
+            <labelMappings>
+                <labelMapping eventId="A1" labelId="Approach Stop"/>
+                <labelMapping eventId="A2" labelId="Stop Button Pressed"/>
+                <labelMapping eventId="A3" labelId="Outside Passengers Waiting"/>
+                <labelMapping eventId="A4" labelId="Special Needs         Button Pressed"/>
+                <labelMapping eventId="A5" labelId="Arrive at Stop"/>
+                <labelMapping eventId="A6" labelId="Pass Stop"/>
+                <labelMapping eventId="A7" labelId="Open Doors"/>
+                <labelMapping eventId="A8" labelId="Passengers Exit"/>
+                <labelMapping eventId="A9" labelId="Check if Bus is too   Crowded"/>
+                <labelMapping eventId="A11" labelId="Close Doors"/>
+                <labelMapping eventId="A12" labelId="Depart From Stop"/>
+                <labelMapping eventId="A13" labelId="Lower Entrance"/>
+                <labelMapping eventId="A14" labelId="Raise Entrance"/>
+                <labelMapping eventId="A15" labelId="Deny Boarding"/>
+                <labelMapping eventId="A17" labelId="Stop Request"/>
+                <labelMapping eventId="A16" labelId="Passengers Enter"/>
+            </labelMappings>
+            <expressions/>
+            <variables/>
+            <variableAccesses>
+                <writeAccesses/>
+            </variableAccesses>
+            <custom>
+                <keywords/>
+                <roles>
+                    <role description="" specification="">Driver</role>
+                    <role description="" specification="">Passengers</role>
+                </roles>
+                <kpis/>
+                <groups/>
+                <phases/>
+                <eventTypes/>
+                <eventParameters/>
+                <graphDetails>DCR Process</graphDetails>
+                <graphDocumentation/>
+                <graphLanguage>en-US</graphLanguage>
+                <graphDomain>process</graphDomain>
+                <graphFilters>
+                    <filteredGroups/>
+                    <filteredRoles/>
+                    <filteredPhases/>
+                </graphFilters>
+                <hightlighterMarkup id="HLM"/>
+                <highlighterMarkup>
+                    <highlightLayers/>
+                    <highlights/>
+                </highlighterMarkup>
+            </custom>
+        </resources>
+        <constraints>
+            <conditions>
+                <condition sourceId="A1" targetId="A17" filterLevel="100" description="" time="" groups="" link="A1--condition--A17"/>
+                <condition sourceId="A14" targetId="A11" filterLevel="100" description="" time="" groups="" link="A14--condition--A11"/>
+                <condition sourceId="A7" targetId="A13" filterLevel="100" description="" time="" groups="" link="A7--condition--A13"/>
+                <condition sourceId="A13" targetId="A8" filterLevel="100" description="" time="" groups="" link="A13--condition--A8"/>
+                <condition sourceId="A13" targetId="A16" filterLevel="100" description="" time="" groups="" link="A13--condition--A16"/>
+                <condition sourceId="A16" targetId="A14" filterLevel="100" description="" time="" groups="" link="A16--condition--A14"/>
+                <condition sourceId="A9" targetId="A16" filterLevel="100" description="" time="" groups="" link="A9--condition--A16"/>
+            </conditions>
+            <responses>
+                <response sourceId="A1" targetId="A6" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="A5" targetId="A7" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="A7" targetId="A9" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="A13" targetId="A14" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="A11" targetId="A12" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="A7" targetId="A11" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="A17" targetId="A5" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="A4" targetId="A13" filterLevel="100" description="" time="" groups=""/>
+            </responses>
+            <coresponses/>
+            <excludes>
+                <exclude sourceId="A17" targetId="A6" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="A6" targetId="A17" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="A15" targetId="A16" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="A5" targetId="A17" filterLevel="100" description="" time="" groups=""/>
+            </excludes>
+            <includes>
+                <include sourceId="A17" targetId="A5" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A9" targetId="A15" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A7" targetId="A8" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A13" targetId="A14" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A11" targetId="A12" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A7" targetId="A9" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A7" targetId="A16" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A7" targetId="A11" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A5" targetId="A7" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="A7" targetId="A13" filterLevel="100" description="" time="" groups=""/>
+            </includes>
+            <milestones>
+                <milestone sourceId="A1" targetId="A17" filterLevel="100" description="" time="" groups="" link="A1--condition--A17"/>
+                <milestone sourceId="A14" targetId="A11" filterLevel="100" description="" time="" groups="" link="A14--condition--A11"/>
+                <milestone sourceId="A7" targetId="A13" filterLevel="100" description="" time="" groups="" link="A7--condition--A13"/>
+                <milestone sourceId="A13" targetId="A8" filterLevel="100" description="" time="" groups="" link="A13--condition--A8"/>
+                <milestone sourceId="A13" targetId="A16" filterLevel="100" description="" time="" groups="" link="A13--condition--A16"/>
+                <milestone sourceId="A16" targetId="A14" filterLevel="100" description="" time="" groups="" link="A16--condition--A14"/>
+                <milestone sourceId="A9" targetId="A16" filterLevel="100" description="" time="" groups="" link="A9--condition--A16"/>
+            </milestones>
+            <updates/>
+            <spawns/>
+            <templateSpawns/>
+        </constraints>
+    </specification>
+    <runtime>
+        <custom>
+            <globalMarking/>
+        </custom>
+        <marking>
+            <globalStore/>
+            <executed/>
+            <included>
+                <event id="A1"/>
+                <event id="A2"/>
+                <event id="A3"/>
+                <event id="A4"/>
+                <event id="A6"/>
+                <event id="A17"/>
+            </included>
+            <pendingResponses/>
+        </marking>
+    </runtime>
+</dcrgraph>
