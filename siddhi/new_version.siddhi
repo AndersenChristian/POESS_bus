@@ -2,23 +2,12 @@
 
 
 -- Input streams
-
--- DriverEvents: possible actions
---   - ApproachStop
---   - PassStop
---   - ArriveAtStop
---   - DepartFromStop
---   - OpenDoors
---   - CloseDoors
---   - CheckCrowding
---   - LowerEntrance
---   - RaiseEntrance
 @source(
     type='http',
-    receiver.url="http://0.0.0.0:7072/driver",
+    receiver.url="http://0.0.0.0:7071/driver",
     @map(type='json')
 )
-define stream DriverEvents(driverId string, busId string, action string);
+define stream DriverStream(bus_id string, action string);
 
 -- PassengerEvents: possible actions
 --   - Board
@@ -31,256 +20,224 @@ define stream DriverEvents(driverId string, busId string, action string);
     receiver.url="http://0.0.0.0:7072/passenger",
     @map(type='json')
 )
-define stream PassengerEvents(passengerId string, busId string, action string);
-
-@source(
-    type='http',
-    receiver.url="http://localhost:7072/create_bus",
-    @map(type='json')
-)
-define stream CreateBusStream(
-    busId string
-);
-
-define stream lowerEntranceTrigger(busId string);
+define stream PassengerStream(passenger_id string, bus_id string, action string);
 
 -- Bus state table
-define table BusState(
-    busId string,
-    approachingStop bool,
-    stopRequired bool,
-    waitingAtStop bool,
-    stopWithSpecialNeeds bool,
-    atStop bool,
-    doorsOpen bool,
-    entranceLowered bool,
-    crowded bool
+define table BusCases(
+    bus_id string,
+    case_id string
 );
 
 -- Each row = one passenger currently on a bus
 define table BusPassengerRelation(
-    busId string,
-    passengerId string
+    passernger_id string,
+    bus_id string
 );
 
 -- Output streams
+-- CreateCase - /create_case
+@sink(type='http',
+      publisher.url='http://localhost:5001/create_case',
+      method='POST',
+      @map(type='json'))
+define stream CreateCase (bus_id string);
 
--- Driver
-@sink(
-    type='http',
-    publisher.url="http://localhost:7072/driver/{{driverId}}",
-    method='POST',
-    @map(type='json')
-)
-define stream DriverResponseStream(
-    driverId string,
-    payloadType string,
-    payload object
-);
+-- AllAvailableActions - /available_actions
+@sink(type='http',
+      publisher.url='http://localhost:5001/available_actions',
+      method='POST',
+      @map(type='json'))
+define stream AllAvailableActions (case_id string, role string, bus_id string);
 
--- Passenger
-@sink(
-    type='http',
-    publisher.url="http://localhost:7072/passenger_id/{{passengerId}}",
-    method='POST',
-    @map(type='json')
-)
-define stream PassengerResponseStream(
-    passengerId string,
-    payloadType string,
-    payload object
-);
+-- ApproachStop → /approach_stop
+@sink(type='http',
+      publisher.url='http://localhost:5001/approach_stop',
+      method='POST',
+      @map(type='json'))
+define stream ApproachStopOut (case_id string, bus_id string);
 
-@sink(
-    type='http',
-    publisher.url="http://localhost:7072/passenger_bus/{{busId}}",
-    method='POST',
-    @map(type='json')
-)
-define stream PassengerNotificationStream(
-    busId string,
-    payloadType string,
-    payload object
-);
+-- SBTN_STOP → /special_btn_press
+@sink(type='http',
+      publisher.url='http://localhost:5001/special_btn_press',
+      method='POST',
+      @map(type='json'))
+define stream SBTN_STOP (case_id string, bus_id string);
 
--- Insert new bus into BusState with defaults
-from CreateBusStream
-select busId,
-       false as approachingStop,
-       false as stopRequired,
-       false as waitingAtStop,
-       false as stopWithSpecialNeeds,
-       false as atStop,
-       false as doorsOpen,
-       false as entranceLowered,
-       false as crowded
-insert into BusState;
+-- PassengerWaiting → /special_btn_press
+@sink(type='http',
+      publisher.url='http://localhost:5001/special_btn_press',
+      method='POST',
+      @map(type='json'))
+define stream PassengerWaiting (case_id string, bus_id string);
 
----------------------------------------------------
--- DRIVER ACTIONS UPDATE BUS STATE
----------------------------------------------------
+-- StopClicked → /stop_btn_pressed
+@sink(type='http',
+      publisher.url='http://localhost:5001/stop_btn_pressed',
+      method='POST',
+      @map(type='json'))
+define stream StopClicked (case_id string, bus_id string);
 
--- Update BusState
-from DriverEvents[action == "ApproachStop"] as d
-join BusState as b
-on b.busId == d.busId
-select d.busId,
-       true as approachingStop,
-       b.stopRequired,
-       b.stopWithSpecialNeeds,
-       b.atStop,
-       b.doorsOpen,
-       b.entranceLowered,
-       b.crowded
-update BusState
-on BusState.busId == busId;
+-- ArriveAtStop → /arrive_at_stop
+@sink(type='http',
+      publisher.url='http://localhost:5001/arriving',
+      method='POST',
+      @map(type='json'))
+define stream ArriveAtStopOut (case_id string, bus_id string);
 
--- Notify passengers
-from DriverEvents[action == "ApproachStop"]
-select busId,
-       "ApproachStopNotice" as payloadType,
-       map:create("message","Bus approaching stop. You may press stop, special stop, or request boarding.") as payload
-insert into PassengerNotificationStream;
+-- Crowded → /check_bus_crowded
+@sink(type='http',
+      publisher.url='http://localhost:5001/check_bus_crowded',
+      method='POST',
+      @map(type='json'))
+define stream Crowded (case_id string, bus_id string);
 
--- Driver arrives at stop: decide whether to stop or continue
-from DriverEvents[action == "ArrivingAtStop"] as d
-join BusState as b
-on b.busId == d.busId
-select d.busId as driverId,
-       ifThenElse(b.stopRequired == true or b.stopWithSpecialNeeds == true,
-                  "Stop",
-                  "Continue") as payloadType,
-       map:create("message","Driver arriving at stop, decision issued.") as payload
-insert into DriverResponseStream;
+-- OpenDoors → /open_doors
+@sink(type='http',
+      publisher.url='http://localhost:5001/open_doors',
+      method='POST',
+      @map(type='json'))
+define stream OpenDoorsOut (case_id string, bus_id string);
 
--- Update BusState when driver arrives
-from DriverEvents[action == "ArrivingAtStop"] as d
-join BusState as b
-on b.busId == d.busId
-select d.busId,
-       false as approachingStop,  -- always reset when arriving
-       b.stopRequired,
-       b.stopWithSpecialNeeds,
-       ifThenElse(b.stopRequired == true or b.stopWithSpecialNeeds == true,
-                  true,
-                  false) as atStop,  -- only true if stopping
-       b.doorsOpen,
-       b.entranceLowered,
-       b.crowded
-update BusState
-on BusState.busId == busId;
+-- CloseDoors → /close_doors
+@sink(type='http',
+      publisher.url='http://localhost:5001/close_doors',
+      method='POST',
+      @map(type='json'))
+define stream CloseDoorsOut (case_id string, bus_id string);
 
+-- DenyBoarding → /deny_boarding
+@sink(type='http',
+      publisher.url='http://localhost:5001/deny_boarding',
+      method='POST',
+      @map(type='json'))
+define stream DenyBoarding (case_id string, bus_id string);
 
-from DriverEvents[action == "OpenDoors"] as d
-join BusState as b
-on b.busId == d.busId and b.atStop == true and b.doorsOpen == false
-select d.busId,
-       b.approachingStop,
-       b.stopRequired,
-       b.waitingAtStop,
-       b.stopWithSpecialNeeds,
-       b.atStop,
-       true as doorsOpen,
-       b.entranceLowered,
-       b.crowded
-update BusState
-on BusState.busId == busId;
+-- LowerEntrance → /lower_entrance
+@sink(type='http',
+      publisher.url='http://localhost:5001/lower_entrance',
+      method='POST',
+      @map(type='json'))
+define stream LowerEntrance (case_id string, bus_id string);
 
+-- RaiseEntrance - /raise_entrance
+@sink(type='http',
+      publisher.url='http://localhost:5001/raise_entrance',
+      method='POST',
+      @map(type='json'))
+define stream RaiseEntrance (case_id string, bus_id string);
 
+-- DepartFromStop → /depart_from_stop
+@sink(type='http',
+      publisher.url='http://localhost:5001/depart_from_stop',
+      method='POST',
+      @map(type='json'))
+define stream DepartFromStop (case_id string, bus_id string);
 
+-- PassengerEnter → /passengers_enter
+@sink(type='http',
+      publisher.url='http://localhost:5001/passengers_enter',
+      method='POST',
+      @map(type='json'))
+define stream PassengerEnter (case_id string, passenger_id string);
 
----------------------------------------------------
--- PASSENGER ACTIONS DEPEND ON BUS STATE
----------------------------------------------------
+-- PassengerExit → /passengers_exit
+@sink(type='http',
+      publisher.url='http://localhost:5001/passengers_exit',
+      method='POST',
+      @map(type='json'))
+define stream PassengerExit (case_id string, passenger_id string);
 
--- Passenger presses stop or waits at stop
-from PassengerEvents[action == "waitingAtStop" or action == "StopButtonPressed"] as p
-join BusState as b
-on b.busId == "BUS_1"
-select b.busId,
-       b.approachingStop,
-       true as stopRequired,
-       true as waitingAtStop,
-       b.stopWithSpecialNeeds,
-       b.atStop,
-       b.doorsOpen,
-       b.entranceLowered,
-       b.crowded
-update BusState
-on BusState.busId == busId;
+--actions
+from DriverStream[action == "CreateCase"]
+select bus_id
+insert into CreateCase;
 
--- Passenger presses special needs button
-from PassengerEvents[action == "SpecialNeedsButtonPressed"] as p
-join BusState as b
-on b.busId == "BUS_1"
-select b.busId,
-       b.approachingStop,
-       b.stopRequired,
-       true as stopWithSpecialNeeds,
-       b.atStop,
-       b.doorsOpen,
-       b.entranceLowered,
-       b.crowded
-update BusState
-on BusState.busId == busId;
+from DriverStream[action == "AllAvailableActions"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, "driver" as role, d.bus_id
+insert into AllAvailableActions;
 
--- Passenger leaving
+from DriverStream[action == "ApproachStop"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into ApproachStopOut;
 
--- Passenger boards successfully if bus occupancy < 20
-from PassengerEvents[action == "BoardRequest"] as p
-join BusPassengerRelation as r
-on r.busId == p.busId
-select p.busId, count(r.passengerId) as passengerCount, p.passengerId
-group by p.busId, p.passengerId
-having passengerCount < 20
-insert into PassengerBoardAllowedStream;
+from DriverStream[action == "SBTN_STOP"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into SBTN_STOP;
 
--- Update relation
-from PassengerBoardAllowedStream
-select busId, passengerId
-insert into BusPassengerRelation;
+from DriverStream[action == "PassengerWaiting"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into PassengerWaiting;
 
--- Notify passenger
-from PassengerBoardAllowedStream
-select passengerId,
-       "BoardingResult" as payloadType,
-       map:create("status","Boarded") as payload
-insert into PassengerResponseStream;
+from DriverStream[action == "StopClicked"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into StopClicked;
 
+from DriverStream[action == "ArriveAtStop"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into ArriveAtStopOut;
 
--- Passenger denied boarding if bus occupancy >= 20
-from PassengerEvents[action == "BoardRequest"] as p
-join BusPassengerRelation as r
-on r.busId == p.busId
-select p.busId, count(r.passengerId) as passengerCount, p.passengerId
-group by p.busId, p.passengerId
-having passengerCount >= 20
-insert into PassengerBoardDeniedStream;
+from DriverStream[action == "Crowded"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into Crowded;
 
--- Notify passenger
-from PassengerBoardDeniedStream
-select passengerId,
-       "BoardingResult" as payloadType,
-       map:create("status","Denied","reason","Bus is full") as payload
-insert into PassengerResponseStream;
+from DriverStream[action == "OpenDoors"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into OpenDoorsOut;
 
+from DriverStream[action == "CloseDoors"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into CloseDoorsOut;
 
------------------
--- Automatic
------------------
+from DriverStream[action == "DenyBoarding"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into DenyBoarding;
 
--- Fire automatically (could be scheduled or emitted by another query)
--- Lower entrance if conditions are met
-from lowerEntranceTrigger as t
-join BusState as b
-on b.busId == t.busId and b.atStop == true and b.doorsOpen == true and b.stopWithSpecialNeeds == true
-select b.busId,
-       b.approachingStop,
-       b.stopRequired,
-       b.stopWithSpecialNeeds,
-       b.atStop,
-       b.doorsOpen,
-       true as entranceLowered,
-       b.crowded
-update BusState
-on BusState.busId == busId;
+from DriverStream[action == "LowerEntrance"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into LowerEntrance;
+
+from DriverStream[action == "RaiseEntrance"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into RaiseEntrance;
+
+from DriverStream[action == "DepartFromStop"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.bus_id
+insert into DepartFromStop;
+
+from PassengerStream[action == "PassengerEnter"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.passenger_id
+insert into PassengerEnter;
+
+from PassengerStream[action == "PassengerExit"] as d
+join BusCases as b
+    on d.bus_id == b.bus_id
+select b.case_id, d.passenger_id
+insert into PassengerExit;
