@@ -8,7 +8,7 @@
     <specification>
         <resources>
             <events>
-                <event id="A1">
+                <event id="ApproachStop">
                     <precondition message=""/>
                     <custom>
                         <visualization>
@@ -41,7 +41,7 @@
                         <interfaces/>
                     </custom>
                 </event>
-                <event id="A6">
+                <event id="PassStop">
                     <precondition message=""/>
                     <custom>
                         <visualization>
@@ -74,7 +74,7 @@
                         <interfaces/>
                     </custom>
                 </event>
-                <event id="A18" type="nesting">
+                <event id="StopProcess" type="nesting">
                     <precondition message=""/>
                     <custom>
                         <visualization>
@@ -106,7 +106,7 @@
                         <eventData/>
                         <interfaces/>
                     </custom>
-                    <event id="A14">
+                    <event id="RaiseEntrance">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -139,7 +139,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A8">
+                    <event id="PassengersExit">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -173,7 +173,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A13">
+                    <event id="LowerEntrance">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -206,7 +206,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A7">
+                    <event id="OpenDoors">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -239,7 +239,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A5">
+                    <event id="ArriveAtStop">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -272,7 +272,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A9">
+                    <event id="CheckBusCrowded">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -305,7 +305,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A15">
+                    <event id="DenyBoarding">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -338,7 +338,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A16">
+                    <event id="PassengersEnter">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -372,7 +372,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A11">
+                    <event id="CloseDoors">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -405,7 +405,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A12">
+                    <event id="DepartFromStop">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -438,7 +438,7 @@
                             <interfaces/>
                         </custom>
                     </event>
-                    <event id="A17" type="subprocess">
+                    <event id="StopRequest" type="subprocess">
                         <precondition message=""/>
                         <custom>
                             <visualization>
@@ -470,7 +470,7 @@
                             <eventData/>
                             <interfaces/>
                         </custom>
-                        <event id="A4">
+                        <event id="SpecialBtnPress">
                             <precondition message=""/>
                             <custom>
                                 <visualization>
@@ -503,7 +503,7 @@
                                 <interfaces/>
                             </custom>
                         </event>
-                        <event id="A3">
+                        <event id="PassengersWaiting">
                             <precondition message=""/>
                             <custom>
                                 <visualization>
@@ -536,7 +536,7 @@
                                 <interfaces/>
                             </custom>
                         </event>
-                        <event id="A2">
+                        <event id="StopBtnPressed">
                             <precondition message=""/>
                             <custom>
                                 <visualization>
@@ -594,23 +594,23 @@
                 <label id="Stop process"/>
             </labels>
             <labelMappings>
-                <labelMapping eventId="A1" labelId="Approach Stop"/>
-                <labelMapping eventId="A2" labelId="Stop Button Pressed"/>
-                <labelMapping eventId="A3" labelId="Outside Passengers Waiting"/>
-                <labelMapping eventId="A4" labelId="Special Needs         Button Pressed"/>
-                <labelMapping eventId="A5" labelId="Arrive at Stop"/>
-                <labelMapping eventId="A6" labelId="Pass Stop"/>
-                <labelMapping eventId="A7" labelId="Open Doors"/>
-                <labelMapping eventId="A8" labelId="Passengers Exit"/>
-                <labelMapping eventId="A9" labelId="Check if Bus is too   Crowded"/>
-                <labelMapping eventId="A11" labelId="Close Doors"/>
-                <labelMapping eventId="A12" labelId="Depart From Stop"/>
-                <labelMapping eventId="A13" labelId="Lower Entrance"/>
-                <labelMapping eventId="A14" labelId="Raise Entrance"/>
-                <labelMapping eventId="A15" labelId="Deny Boarding"/>
-                <labelMapping eventId="A17" labelId="Stop Request"/>
-                <labelMapping eventId="A16" labelId="Passengers Enter"/>
-                <labelMapping eventId="A18" labelId="Stop process"/>
+                <labelMapping eventId="ApproachStop" labelId="Approach Stop"/>
+                <labelMapping eventId="StopBtnPressed" labelId="Stop Button Pressed"/>
+                <labelMapping eventId="PassengersWaiting" labelId="Outside Passengers Waiting"/>
+                <labelMapping eventId="SpecialBtnPress" labelId="Special Needs         Button Pressed"/>
+                <labelMapping eventId="ArriveAtStop" labelId="Arrive at Stop"/>
+                <labelMapping eventId="PassStop" labelId="Pass Stop"/>
+                <labelMapping eventId="OpenDoors" labelId="Open Doors"/>
+                <labelMapping eventId="PassengersExit" labelId="Passengers Exit"/>
+                <labelMapping eventId="CheckBusCrowded" labelId="Check if Bus is too   Crowded"/>
+                <labelMapping eventId="CloseDoors" labelId="Close Doors"/>
+                <labelMapping eventId="DepartFromStop" labelId="Depart From Stop"/>
+                <labelMapping eventId="LowerEntrance" labelId="Lower Entrance"/>
+                <labelMapping eventId="RaiseEntrance" labelId="Raise Entrance"/>
+                <labelMapping eventId="DenyBoarding" labelId="Deny Boarding"/>
+                <labelMapping eventId="StopRequest" labelId="Stop Request"/>
+                <labelMapping eventId="PassengersEnter" labelId="Passengers Enter"/>
+                <labelMapping eventId="StopProcess" labelId="Stop process"/>
             </labelMappings>
             <expressions/>
             <variables/>
@@ -651,64 +651,64 @@
         </resources>
         <constraints>
             <conditions>
-                <condition sourceId="A1" targetId="A17" filterLevel="100" description="" time="" groups="" link="A1--condition--A18.A17"/>
-                <condition sourceId="A7" targetId="A13" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A13"/>
-                <condition sourceId="A9" targetId="A16" filterLevel="100" description="" time="" groups="" link="A18.A9--condition--A18.A16"/>
-                <condition sourceId="A1" targetId="A6" filterLevel="100" description="" time="" groups="" link="A1--condition--A6"/>
-                <condition sourceId="A5" targetId="A7" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A7"/>
-                <condition sourceId="A17" targetId="A5" filterLevel="100" description="" time="" groups="" link="A18.A17--condition--A18.A5"/>
-                <condition sourceId="A7" targetId="A8" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A8"/>
-                <condition sourceId="A13" targetId="A14" filterLevel="100" description="" time="" groups="" link="A18.A13--condition--A18.A14"/>
-                <condition sourceId="A9" targetId="A15" filterLevel="100" description="" time="" groups="" link="A18.A9--condition--A18.A15"/>
-                <condition sourceId="A7" targetId="A16" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A16"/>
-                <condition sourceId="A5" targetId="A9" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A9"/>
-                <condition sourceId="A11" targetId="A12" filterLevel="100" description="" time="" groups="" link="A18.A11--condition--A18.A12"/>
-                <condition sourceId="A5" targetId="A12" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A12"/>
+                <condition sourceId="ApproachStop" targetId="StopRequest" filterLevel="100" description="" time="" groups="" link="A1--condition--A18.A17"/>
+                <condition sourceId="OpenDoors" targetId="LowerEntrance" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A13"/>
+                <condition sourceId="CheckBusCrowded" targetId="PassengersEnter" filterLevel="100" description="" time="" groups="" link="A18.A9--condition--A18.A16"/>
+                <condition sourceId="ApproachStop" targetId="PassStop" filterLevel="100" description="" time="" groups="" link="A1--condition--A6"/>
+                <condition sourceId="ArriveAtStop" targetId="OpenDoors" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A7"/>
+                <condition sourceId="StopRequest" targetId="ArriveAtStop" filterLevel="100" description="" time="" groups="" link="A18.A17--condition--A18.A5"/>
+                <condition sourceId="OpenDoors" targetId="PassengersExit" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A8"/>
+                <condition sourceId="LowerEntrance" targetId="RaiseEntrance" filterLevel="100" description="" time="" groups="" link="A18.A13--condition--A18.A14"/>
+                <condition sourceId="CheckBusCrowded" targetId="DenyBoarding" filterLevel="100" description="" time="" groups="" link="A18.A9--condition--A18.A15"/>
+                <condition sourceId="OpenDoors" targetId="PassengersEnter" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A16"/>
+                <condition sourceId="ArriveAtStop" targetId="CheckBusCrowded" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A9"/>
+                <condition sourceId="CloseDoors" targetId="DepartFromStop" filterLevel="100" description="" time="" groups="" link="A18.A11--condition--A18.A12"/>
+                <condition sourceId="ArriveAtStop" targetId="DepartFromStop" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A12"/>
             </conditions>
             <responses>
-                <response sourceId="A13" targetId="A14" filterLevel="100" description="" time="" groups=""/>
-                <response sourceId="A17" targetId="A5" filterLevel="100" description="" time="" groups=""/>
-                <response sourceId="A4" targetId="A13" filterLevel="100" description="" time="" groups=""/>
-                <response sourceId="A3" targetId="A9" filterLevel="100" description="" time="" groups=""/>
-                <response sourceId="A9" targetId="A15" filterLevel="100" description="" time="" groups=""/>
-                <response sourceId="A9" targetId="A16" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="LowerEntrance" targetId="RaiseEntrance" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="StopRequest" targetId="ArriveAtStop" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="SpecialBtnPress" targetId="LowerEntrance" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="PassengersWaiting" targetId="CheckBusCrowded" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="CheckBusCrowded" targetId="DenyBoarding" filterLevel="100" description="" time="" groups=""/>
+                <response sourceId="CheckBusCrowded" targetId="PassengersEnter" filterLevel="100" description="" time="" groups=""/>
             </responses>
             <coresponses/>
             <excludes>
-                <exclude sourceId="A15" targetId="A16" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A7" targetId="A7" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A11" targetId="A11" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A16" targetId="A15" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A17" targetId="A6" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A6" targetId="A18" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A11" targetId="A16" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A11" targetId="A8" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A12" targetId="A18" filterLevel="100" description="" time="" groups=""/>
-                <exclude sourceId="A5" targetId="A5" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="DenyBoarding" targetId="PassengersEnter" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="OpenDoors" targetId="OpenDoors" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="CloseDoors" targetId="CloseDoors" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="PassengersEnter" targetId="DenyBoarding" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="StopRequest" targetId="PassStop" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="PassStop" targetId="StopProcess" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="CloseDoors" targetId="PassengersEnter" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="CloseDoors" targetId="PassengersExit" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="DepartFromStop" targetId="StopProcess" filterLevel="100" description="" time="" groups=""/>
+                <exclude sourceId="ArriveAtStop" targetId="ArriveAtStop" filterLevel="100" description="" time="" groups=""/>
             </excludes>
             <includes>
-                <include sourceId="A7" targetId="A11" filterLevel="100" description="" time="" groups=""/>
-                <include sourceId="A11" targetId="A7" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="OpenDoors" targetId="CloseDoors" filterLevel="100" description="" time="" groups=""/>
+                <include sourceId="CloseDoors" targetId="OpenDoors" filterLevel="100" description="" time="" groups=""/>
             </includes>
             <milestones>
-                <milestone sourceId="A1" targetId="A17" filterLevel="100" description="" time="" groups="" link="A1--condition--A18.A17"/>
-                <milestone sourceId="A7" targetId="A13" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A13"/>
-                <milestone sourceId="A9" targetId="A16" filterLevel="100" description="" time="" groups="" link="A18.A9--condition--A18.A16"/>
-                <milestone sourceId="A1" targetId="A6" filterLevel="100" description="" time="" groups="" link="A1--condition--A6"/>
-                <milestone sourceId="A5" targetId="A7" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A7"/>
-                <milestone sourceId="A17" targetId="A5" filterLevel="100" description="" time="" groups="" link="A18.A17--condition--A18.A5"/>
-                <milestone sourceId="A7" targetId="A8" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A8"/>
-                <milestone sourceId="A13" targetId="A14" filterLevel="100" description="" time="" groups="" link="A18.A13--condition--A18.A14"/>
-                <milestone sourceId="A9" targetId="A15" filterLevel="100" description="" time="" groups="" link="A18.A9--condition--A18.A15"/>
-                <milestone sourceId="A7" targetId="A16" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A16"/>
-                <milestone sourceId="A5" targetId="A9" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A9"/>
-                <milestone sourceId="A11" targetId="A12" filterLevel="100" description="" time="" groups="" link="A18.A11--condition--A18.A12"/>
-                <milestone sourceId="A5" targetId="A12" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A12"/>
-                <milestone sourceId="A9" targetId="A11" filterLevel="100" description="" time="" groups=""/>
-                <milestone sourceId="A16" targetId="A11" filterLevel="100" description="" time="" groups=""/>
-                <milestone sourceId="A15" targetId="A11" filterLevel="100" description="" time="" groups=""/>
-                <milestone sourceId="A13" targetId="A11" filterLevel="100" description="" time="" groups=""/>
-                <milestone sourceId="A14" targetId="A11" filterLevel="100" description="" time="" groups=""/>
+                <milestone sourceId="ApproachStop" targetId="StopRequest" filterLevel="100" description="" time="" groups="" link="A1--condition--A18.A17"/>
+                <milestone sourceId="OpenDoors" targetId="LowerEntrance" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A13"/>
+                <milestone sourceId="CheckBusCrowded" targetId="PassengersEnter" filterLevel="100" description="" time="" groups="" link="A18.A9--condition--A18.A16"/>
+                <milestone sourceId="ApproachStop" targetId="PassStop" filterLevel="100" description="" time="" groups="" link="A1--condition--A6"/>
+                <milestone sourceId="ArriveAtStop" targetId="OpenDoors" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A7"/>
+                <milestone sourceId="StopRequest" targetId="ArriveAtStop" filterLevel="100" description="" time="" groups="" link="A18.A17--condition--A18.A5"/>
+                <milestone sourceId="OpenDoors" targetId="PassengersExit" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A8"/>
+                <milestone sourceId="LowerEntrance" targetId="RaiseEntrance" filterLevel="100" description="" time="" groups="" link="A18.A13--condition--A18.A14"/>
+                <milestone sourceId="CheckBusCrowded" targetId="DenyBoarding" filterLevel="100" description="" time="" groups="" link="A18.A9--condition--A18.A15"/>
+                <milestone sourceId="OpenDoors" targetId="PassengersEnter" filterLevel="100" description="" time="" groups="" link="A18.A7--condition--A18.A16"/>
+                <milestone sourceId="ArriveAtStop" targetId="CheckBusCrowded" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A9"/>
+                <milestone sourceId="CloseDoors" targetId="DepartFromStop" filterLevel="100" description="" time="" groups="" link="A18.A11--condition--A18.A12"/>
+                <milestone sourceId="ArriveAtStop" targetId="DepartFromStop" filterLevel="100" description="" time="" groups="" link="A18.A5--condition--A18.A12"/>
+                <milestone sourceId="CheckBusCrowded" targetId="CloseDoors" filterLevel="100" description="" time="" groups=""/>
+                <milestone sourceId="PassengersEnter" targetId="CloseDoors" filterLevel="100" description="" time="" groups=""/>
+                <milestone sourceId="DenyBoarding" targetId="CloseDoors" filterLevel="100" description="" time="" groups=""/>
+                <milestone sourceId="LowerEntrance" targetId="CloseDoors" filterLevel="100" description="" time="" groups=""/>
+                <milestone sourceId="RaiseEntrance" targetId="CloseDoors" filterLevel="100" description="" time="" groups=""/>
             </milestones>
             <updates/>
             <spawns/>
@@ -723,25 +723,25 @@
             <globalStore/>
             <executed/>
             <included>
-                <event id="A1"/>
-                <event id="A2"/>
-                <event id="A3"/>
-                <event id="A4"/>
-                <event id="A5"/>
-                <event id="A6"/>
-                <event id="A7"/>
-                <event id="A8"/>
-                <event id="A9"/>
-                <event id="A12"/>
-                <event id="A13"/>
-                <event id="A14"/>
-                <event id="A15"/>
-                <event id="A17"/>
-                <event id="A16"/>
-                <event id="A18"/>
+                <event id="ApproachStop"/>
+                <event id="StopBtnPressed"/>
+                <event id="PassengersWaiting"/>
+                <event id="SpecialBtnPress"/>
+                <event id="ArriveAtStop"/>
+                <event id="PassStop"/>
+                <event id="OpenDoors"/>
+                <event id="PassengersExit"/>
+                <event id="CheckBusCrowded"/>
+                <event id="DepartFromStop"/>
+                <event id="LowerEntrance"/>
+                <event id="RaiseEntrance"/>
+                <event id="DenyBoarding"/>
+                <event id="StopRequest"/>
+                <event id="PassengersEnter"/>
+                <event id="StopProcess"/>
             </included>
             <pendingResponses>
-                <event id="A1"/>
+                <event id="ApproachStop"/>
             </pendingResponses>
         </marking>
     </runtime>

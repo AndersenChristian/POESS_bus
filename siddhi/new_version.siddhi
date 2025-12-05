@@ -13,6 +13,11 @@
 --   - CheckCrowding
 --   - LowerEntrance
 --   - RaiseEntrance
+@source(
+    type='http',
+    receiver.url="http://0.0.0.0:7072/driver",
+    @map(type='json')
+)
 define stream DriverEvents(driverId string, busId string, action string);
 
 -- PassengerEvents: possible actions
@@ -21,7 +26,23 @@ define stream DriverEvents(driverId string, busId string, action string);
 --   - WaitingAtStop
 --   - StopButtonPressed
 --   - SpecialNeedsButtonPressed
+@source(
+    type='http',
+    receiver.url="http://0.0.0.0:7072/passenger",
+    @map(type='json')
+)
 define stream PassengerEvents(passengerId string, busId string, action string);
+
+@source(
+    type='http',
+    receiver.url="http://localhost:7072/create_bus",
+    @map(type='json')
+)
+define stream CreateBusStream(
+    busId string
+);
+
+define stream lowerEntranceTrigger(busId string);
 
 -- Bus state table
 define table BusState(
@@ -42,15 +63,12 @@ define table BusPassengerRelation(
     passengerId string
 );
 
-
-
-
 -- Output streams
 
 -- Driver
 @sink(
     type='http',
-    publisher.url="http://localhost:5001/driver/{{driverId}}",
+    publisher.url="http://localhost:7072/driver/{{driverId}}",
     method='POST',
     @map(type='json')
 )
@@ -63,7 +81,7 @@ define stream DriverResponseStream(
 -- Passenger
 @sink(
     type='http',
-    publisher.url="http://localhost:5001/passenger_id/{{passengerId}}",
+    publisher.url="http://localhost:7072/passenger_id/{{passengerId}}",
     method='POST',
     @map(type='json')
 )
@@ -75,7 +93,7 @@ define stream PassengerResponseStream(
 
 @sink(
     type='http',
-    publisher.url="http://localhost:5001/passenger_bus/{{busId}}",
+    publisher.url="http://localhost:7072/passenger_bus/{{busId}}",
     method='POST',
     @map(type='json')
 )
@@ -85,7 +103,18 @@ define stream PassengerNotificationStream(
     payload object
 );
 
--- Output streams passengers
+-- Insert new bus into BusState with defaults
+from CreateBusStream
+select busId,
+       false as approachingStop,
+       false as stopRequired,
+       false as waitingAtStop,
+       false as stopWithSpecialNeeds,
+       false as atStop,
+       false as doorsOpen,
+       false as entranceLowered,
+       false as crowded
+insert into BusState;
 
 ---------------------------------------------------
 -- DRIVER ACTIONS UPDATE BUS STATE
@@ -113,18 +142,24 @@ select busId,
        map:create("message","Bus approaching stop. You may press stop, special stop, or request boarding.") as payload
 insert into PassengerNotificationStream;
 
-
 -- Driver arrives at stop: decide whether to stop or continue
 from DriverEvents[action == "ArrivingAtStop"] as d
 join BusState as b
 on b.busId == d.busId
-select d.busId,
+select d.busId as driverId,
        ifThenElse(b.stopRequired == true or b.stopWithSpecialNeeds == true,
                   "Stop",
-                  "Continue") as command,
+                  "Continue") as payloadType,
+       map:create("message","Driver arriving at stop, decision issued.") as payload
+insert into DriverResponseStream;
+
+-- Update BusState when driver arrives
+from DriverEvents[action == "ArrivingAtStop"] as d
+join BusState as b
+on b.busId == d.busId
+select d.busId,
        false as approachingStop,  -- always reset when arriving
        b.stopRequired,
-       b.waitingAtStop,
        b.stopWithSpecialNeeds,
        ifThenElse(b.stopRequired == true or b.stopWithSpecialNeeds == true,
                   true,
@@ -132,7 +167,9 @@ select d.busId,
        b.doorsOpen,
        b.entranceLowered,
        b.crowded
-insert into DriverResponseStream, BusState;
+update BusState
+on BusState.busId == busId;
+
 
 from DriverEvents[action == "OpenDoors"] as d
 join BusState as b
@@ -189,64 +226,61 @@ on BusState.busId == busId;
 
 -- Passenger leaving
 
-
--- Passenger boards successfully: update relation and notify
+-- Passenger boards successfully if bus occupancy < 20
 from PassengerEvents[action == "BoardRequest"] as p
-join BusState as b
-on b.busId == p.busId and b.doorsOpen == true and b.crowded == false
-select p.busId,
-       p.passengerId,
+join BusPassengerRelation as r
+on r.busId == p.busId
+select p.busId, count(r.passengerId) as passengerCount, p.passengerId
+group by p.busId, p.passengerId
+having passengerCount < 20
+insert into PassengerBoardAllowedStream;
+
+-- Update relation
+from PassengerBoardAllowedStream
+select busId, passengerId
+insert into BusPassengerRelation;
+
+-- Notify passenger
+from PassengerBoardAllowedStream
+select passengerId,
        "BoardingResult" as payloadType,
        map:create("status","Boarded") as payload
-insert into BusPassengerRelation, PassengerResponseStream;
+insert into PassengerResponseStream;
 
 
--- Boarding denied
+-- Passenger denied boarding if bus occupancy >= 20
 from PassengerEvents[action == "BoardRequest"] as p
-join BusState as b
-on b.busId == "BUS_1" and b.doorsOpen == true and b.crowded == true
-select p.passengerId, p.busId,
+join BusPassengerRelation as r
+on r.busId == p.busId
+select p.busId, count(r.passengerId) as passengerCount, p.passengerId
+group by p.busId, p.passengerId
+having passengerCount >= 20
+insert into PassengerBoardDeniedStream;
+
+-- Notify passenger
+from PassengerBoardDeniedStream
+select passengerId,
        "BoardingResult" as payloadType,
        map:create("status","Denied","reason","Bus is full") as payload
 insert into PassengerResponseStream;
-
 
 
 -----------------
 -- Automatic
 -----------------
 
--- lower bus
-from BusState[atStop == true and doorsOpen == true and stopWithSpecialNeeds == true]
-select busId,
-       approachingStop,
-       stopRequired,
-       waitingAtStop,
-       stopWithSpecialNeeds,
-       atStop,
-       doorsOpen,
-       true as entranceLowered,
-       crowded
-update BusState
-on BusState.busId == busId;
-
--- Count passengers per bus and update crowded flag
-from BusPassengerRelation#window.length(0)
-select busId, count(passengerId) as passengerCount
-group by busId
-insert into BusLoadStream;
-
--- Update BusState based on passenger count
-from BusLoadStream as l
+-- Fire automatically (could be scheduled or emitted by another query)
+-- Lower entrance if conditions are met
+from lowerEntranceTrigger as t
 join BusState as b
-on b.busId == l.busId
-select l.busId,
+on b.busId == t.busId and b.atStop == true and b.doorsOpen == true and b.stopWithSpecialNeeds == true
+select b.busId,
        b.approachingStop,
        b.stopRequired,
        b.stopWithSpecialNeeds,
        b.atStop,
        b.doorsOpen,
-       b.entranceLowered,
-       ifThenElse(l.passengerCount > 20, true, false) as crowded
+       true as entranceLowered,
+       b.crowded
 update BusState
 on BusState.busId == busId;
