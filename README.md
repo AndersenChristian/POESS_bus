@@ -34,20 +34,6 @@ The Python microservice runs the integration layer between Camunda and Siddhi.
 
 ## 🚀 Getting Started with Camunda and Siddhi
 
-### 1. Start Camunda 8
-
-Make sure Docker Desktop is running.
-
-Start Camunda:
-
-    docker compose up -d
-
-Access Operate:
-
-    http://localhost:8081
-
----
-
 ## 2. Start Siddhi Tooling (Editor)
 
 Download Siddhi WSO2 Streaming Tooling 4.3.0 from:
@@ -97,6 +83,9 @@ Some SSL/Thrift warnings are normal.
 
     cd python
     source venv/bin/activate
+    export DCR_USERNAME={dcr_username}
+    export DCR_PASSWORD={dcr_password}
+    export DCR_GRAPH_ID={dcr_graph_id}
     python app.py
 
 Default port:
@@ -107,43 +96,6 @@ Endpoints:
 
 - `/camundaStream` → receives events from BPMN  
 - `/siddhi/out` → receives events from Siddhi  
-
----
-
-## 5. Deploy BPMN Models (Camunda Modeler)
-
-In Camunda Modeler:
-
-- Target: Camunda 8 Self-Managed  
-- Endpoint: `http://localhost:26500`  
-- Deploy → Start Instance  
-
-The process should appear in Operate.
-
----
-
-## 6. Test Siddhi with a Manual Event
-
-Send a GPS event to Siddhi Runtime:
-
-    curl -X POST http://localhost:7070/gps \
-    -H "Content-Type: application/json" \
-    -d '{"busId":"42", "lat":55.6, "lon":12.5}'
-
-Python app should print the received event.
-
----
-
-## 🧰 Optional: VS Code Extension
-
-WSO2 Streaming Integrator Extension provides:
-
-- Siddhi syntax highlighting  
-- Error detection  
-- Snippets  
-- Easier editing  
-
-Useful, but optional.
 
 ---
 

@@ -22,6 +22,17 @@ define stream DriverStream(bus_id string, action string);
 )
 define stream PassengerStream(passenger_id string, bus_id string, action string);
 
+-- Source: Middleman posts successful events back to Siddhi
+@source(type='http',
+        receiver.url='http://0.0.0.0:7073/middleman',
+        @map(type='json'))
+define stream MiddlemanStream (
+    case_id string,
+    bus_id string,
+    passenger_id string,
+    event string
+);
+
 -- Bus state table
 define table BusCases(
     bus_id string,
@@ -30,7 +41,7 @@ define table BusCases(
 
 -- Each row = one passenger currently on a bus
 define table BusPassengerRelation(
-    passernger_id string,
+    passenger_id string,
     bus_id string
 );
 
@@ -63,9 +74,9 @@ define stream ApproachStopOut (case_id string, bus_id string);
       @map(type='json'))
 define stream SBTN_STOP (case_id string, bus_id string);
 
--- PassengerWaiting → /passengers_waiting
+-- PassengerWaiting → /special_btn_press
 @sink(type='http',
-      publisher.url='http://localhost:5001/passengers_waiting',
+      publisher.url='http://localhost:5001/special_btn_press',
       method='POST',
       @map(type='json'))
 define stream PassengerWaiting (case_id string, bus_id string);
@@ -241,3 +252,28 @@ join BusCases as b
     on d.bus_id == b.bus_id
 select b.case_id, d.passenger_id
 insert into PassengerExit;
+
+-- From middleman
+from MiddlemanStream[event == "CreateCase"]
+select bus_id, case_id
+insert into BusCases;
+
+from MiddlemanStream[event == "PassengersEnter"] as M
+join BusCases as B
+    on M.case_id == B.case_id
+select M.passenger_id as passenger_id,
+       B.bus_id as bus_id
+insert into PassengersOnBus;
+
+from MiddlemanStream[event == "PassengersExit"] as M
+join BusCases as B
+    on M.case_id == B.case_id
+select M.passenger_id as passenger_id,
+       B.bus_id as bus_id
+delete BusPassengerRelation
+on BusPassengerRelation.passenger_id == passenger_id
+   and BusPassengerRelation.bus_id == bus_id;
+   
+from MiddlemanStream[event == "DepartFromStop"]
+delete BusCases
+    on BusCases.case_id == case_id
