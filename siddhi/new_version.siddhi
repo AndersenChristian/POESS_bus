@@ -63,9 +63,9 @@ define stream ApproachStopOut (case_id string, bus_id string);
       @map(type='json'))
 define stream SBTN_STOP (case_id string, bus_id string);
 
--- PassengerWaiting → /special_btn_press
+-- PassengerWaiting → /passengers_waiting
 @sink(type='http',
-      publisher.url='http://localhost:5001/special_btn_press',
+      publisher.url='http://localhost:5001/passengers_waiting',
       method='POST',
       @map(type='json'))
 define stream PassengerWaiting (case_id string, bus_id string);
@@ -164,19 +164,19 @@ join BusCases as b
 select b.case_id, d.bus_id
 insert into ApproachStopOut;
 
-from DriverStream[action == "SBTN_STOP"] as d
+from PassengerStream[action == "SBTN_STOP"] as d
 join BusCases as b
     on d.bus_id == b.bus_id
 select b.case_id, d.bus_id
 insert into SBTN_STOP;
 
-from DriverStream[action == "PassengerWaiting"] as d
+from PassengerStream[action == "PassengerWaiting"] as d
 join BusCases as b
     on d.bus_id == b.bus_id
 select b.case_id, d.bus_id
 insert into PassengerWaiting;
 
-from DriverStream[action == "StopClicked"] as d
+from PassengerStream[action == "StopClicked"] as d
 join BusCases as b
     on d.bus_id == b.bus_id
 select b.case_id, d.bus_id
